@@ -38,6 +38,7 @@ ADD resources/novnc-supervisor.conf /etc/supervisor/conf.d/novnc.conf
 ADD resources/x11vnc-supervisor.conf /etc/supervisor/conf.d/x11vnc.conf
 ADD resources/xvfb-supervisor.conf /etc/supervisor/conf.d/xvfb.conf
 ADD resources/sshd-supervisor.conf /etc/supervisor/conf.d/sshd.conf
+ADD resources/nginx-supervisor.conf /etc/supervisor/conf.d/nginx.conf
 
 COPY resources/id_rsa.pub /root/.ssh/authorized_keys
 RUN chmod 0755 /root/.ssh/authorized_keys
@@ -52,7 +53,9 @@ RUN mkdir -p /home/ubuntu/.config/pcmanfm/LXDE/ \
     && cp /usr/share/doro-lxde-wallpapers/desktop-items-0.conf /home/ubuntu/.config/pcmanfm/LXDE/
 
 USER root
+WORKDIR /web
+RUN ./run.py > /var/log/web.log 2>&1 &
 
 EXPOSE 6080 22
 WORKDIR /root
-ENTRYPOINT ["/startup.sh"]
+ENTRYPOINT ["/usr/bin/supervisord", "-n"]
