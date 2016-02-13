@@ -42,8 +42,16 @@ ADD resources/sshd-supervisor.conf /etc/supervisor/conf.d/sshd.conf
 COPY resources/id_rsa.pub /root/.ssh/authorized_keys
 RUN chmod 0755 /root/.ssh/authorized_keys
 
-RUN mkdir /var/run/sshd
+RUN mkdir -p /var/run/sshd
 RUN sysv-rc-conf sshd on
+
+RUN useradd --create-home --shell /bin/bash --user-group --groups adm,sudo ubuntu \
+    && echo "ubuntu:ubuntu" | chpasswd
+USER ubuntu
+RUN mkdir -p /home/ubuntu/.config/pcmanfm/LXDE/ \
+    && cp /usr/share/doro-lxde-wallpapers/desktop-items-0.conf /home/ubuntu/.config/pcmanfm/LXDE/
+
+USER root
 
 EXPOSE 6080 22
 WORKDIR /root
