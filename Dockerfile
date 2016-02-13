@@ -29,7 +29,6 @@ RUN pip install -r /web/requirements.txt
 
 ADD noVNC /noVNC/
 ADD resources/nginx.conf /etc/nginx/sites-enabled/default
-ADD startup.sh /
 ADD doro-lxde-wallpapers /usr/share/doro-lxde-wallpapers/
 
 ADD resources/supervisord.conf /etc/supervisor.conf
