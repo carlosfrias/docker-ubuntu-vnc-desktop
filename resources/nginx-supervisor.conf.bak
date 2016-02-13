@@ -1,0 +1,11 @@
+[program:nginx]
+priority=30
+directory=/web
+command=nginx -c /etc/nginx/nginx.conf
+user=root
+autostart=true
+autorestart=true
+stopsignal=QUIT
+stdout_logfile=/var/log/nginx.log
+redirect_stderr=true
+stopasgroup=true

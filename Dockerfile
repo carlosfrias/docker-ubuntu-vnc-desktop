@@ -30,8 +30,14 @@ RUN pip install -r /web/requirements.txt
 ADD noVNC /noVNC/
 ADD nginx.conf /etc/nginx/sites-enabled/default
 ADD startup.sh /
-ADD supervisord.conf /etc/supervisor/conf.d/
 ADD doro-lxde-wallpapers /usr/share/doro-lxde-wallpapers/
+
+ADD resources/supervisord.conf /etc/supervisor.conf
+ADD resources/lxsession-supervisor.conf /etc/supervisor/conf.d/lxsession.conf
+ADD resources/novnc-supervisor.conf /etc/supervisor/conf.d/novnc.conf
+ADD resources/x11vnc-supervisor.conf /etc/supervisor/conf.d/x11vnc.conf
+ADD resources/xvfb-supervisor.conf /etc/supervisor/conf.d/xvfb.conf
+ADD resources/sshd-supervisor.conf /etc/supervisor/conf.d/sshd.conf
 
 EXPOSE 6080
 WORKDIR /root
