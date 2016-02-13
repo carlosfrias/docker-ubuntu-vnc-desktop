@@ -15,7 +15,7 @@ RUN apt-get update \
         language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw \
         nginx \
         python-pip python-dev build-essential \
-        mesa-utils libgl1-mesa-dri \
+        mesa-utils libgl1-mesa-dri sysv-rc-conf \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -39,6 +39,12 @@ ADD resources/x11vnc-supervisor.conf /etc/supervisor/conf.d/x11vnc.conf
 ADD resources/xvfb-supervisor.conf /etc/supervisor/conf.d/xvfb.conf
 ADD resources/sshd-supervisor.conf /etc/supervisor/conf.d/sshd.conf
 
-EXPOSE 6080
+COPY resources/id_rsa.pub /root/.ssh/authorized_keys
+RUN chmod 0755 /root/.ssh/authorized_keys
+
+RUN mkdir /var/run/sshd
+RUN sysv-rc-conf sshd on
+
+EXPOSE 6080 22
 WORKDIR /root
 ENTRYPOINT ["/startup.sh"]
